@@ -16,15 +16,6 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->integerIncrements('id');
             $table->char('name');
-            $table->integer('recipe_id')->unsigned();
-        });
-
-        Schema::table('categories', function (Blueprint $table) {
-            $table->foreign('recipe_id')
-                ->references('id')
-                ->on('recipes')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
         });
     }
 
