@@ -15,3 +15,5 @@ use Illuminate\Http\Request;
 
 Route::get('recipes','RecipeController@show');
 Route::get('categories','CategoryController@show');
+
+Route::get('search','SearchController@index');
