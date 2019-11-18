@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use App\Ingredient;
 use App\Recipe;
 use Illuminate\Http\Request;
@@ -23,29 +24,67 @@ class SearchController extends Controller
         $ingredients = [
             'цукор',
             'масло вершкове',
-            'огірки'
+            'огірки',
+            'сіль'
         ];
 
-        foreach ($ingredients as $ingredient) {
+        $category = [
+            'id' => 1,
+        ];
 
-            foreach (Ingredient::searchIngredientsOnRequest($ingredient) as $ingredientId) {
+        $data = [];
+
+        if (isset($ingredients) && !$category) {
+
+            $arrayIngredientsId = [];
+
+            foreach (Ingredient::getIngredientsId($ingredients) as $ingredientId) {
                 $arrayIngredientsId[] = $ingredientId['id'];
             }
-        }
 
-        $recipesAndIngredients = Ingredient::with(['recipes' => function($query)
-        {
-            $query->groupBy('recipes.id');
-        }])->whereIn('id', $arrayIngredientsId)->get();
+            $recipesAndIngredients = Ingredient::with(['recipes' => function($query)
+            {
+                $query->groupBy('recipes.id');
+            }])->whereIn('id', $arrayIngredientsId)->get();
 
-        foreach ($recipesAndIngredients as $recipes) {
+            foreach ($recipesAndIngredients as $recipes) {
 
-            foreach ($recipes['recipes'] as $infoRecipes) {
-                $data[] = $infoRecipes;
+                foreach ($recipes['recipes'] as $infoRecipes) {
+                    $data[] = $infoRecipes;
+                }
             }
-        }
 
-        return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
+            return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
+
+        } elseif (isset($category) && !$ingredients) {
+
+            return response()->json(Recipe::getRecipesByCategoryId($category['id']))->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
+
+        } else {
+
+            $arrayIngredientsId = [];
+
+            foreach (Ingredient::getIngredientsId($ingredients) as $ingredientId) {
+                $arrayIngredientsId[] = $ingredientId['id'];
+            }
+
+            $idCategory = $category['id'];
+
+            $recipesAndIngredients = Ingredient::with(['recipes' => function($query) use($idCategory)
+            {
+                $query->where('category_id', '=', $idCategory)->groupBy('recipes.id');
+            }])->whereIn('id', $arrayIngredientsId)->get();
+
+            foreach ($recipesAndIngredients as $recipes) {
+
+                foreach ($recipes['recipes'] as $infoRecipes) {
+                    unset($infoRecipes['pivot']);
+                    $data[] = $infoRecipes;
+                }
+            }
+
+            return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
+        }
     }
 
     /**

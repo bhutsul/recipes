@@ -18,6 +18,7 @@ class CreateRecipesTable extends Migration
             $table->string('name_recipe');
             $table->string('recipe',2000);
             $table->string('image_name');
+            $table->integer('category_id')->unsigned();
         });
     }
 

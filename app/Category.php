@@ -12,4 +12,9 @@ class Category extends Model
     {
         return $categories = Category::all();
     }
+
+    public function recipes()
+    {
+        return $this->belongsToMany('App\Recipe', 'category_index', 'category_id', 'recipe_id');
+    }
 }

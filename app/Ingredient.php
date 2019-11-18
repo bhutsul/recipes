@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ingredient extends Model
 {
-    public static function searchIngredientsOnRequest($ingredient) {
-        return Ingredient::where('name', $ingredient)->get('id');
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name',
+    ];
+
+
+    public static function getIngredientsId($ingredient = []) {
+        return Ingredient::whereIn('name', $ingredient)->get('id');
     }
 
     public function recipes()
