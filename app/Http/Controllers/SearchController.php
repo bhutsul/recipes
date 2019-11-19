@@ -6,7 +6,6 @@ use App\Category;
 use App\Ingredient;
 use App\Recipe;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Integer;
 
 class SearchController extends Controller
 {
@@ -21,20 +20,13 @@ class SearchController extends Controller
      */
     public function index()
     {
-        $ingredients = [
-            'цукор',
-            'масло вершкове',
-            'огірки',
-            'сіль'
-        ];
 
-        $category = [
-            'id' => 1,
-        ];
+        $ingredients = explode(',',$this->request->get('ingredients', false));
+        $category = $this->request->get('category', false);
 
         $data = [];
 
-        if (isset($ingredients) && !$category) {
+        if (isset($ingredients) && $ingredients[0] != false && $category == false) {
 
             $arrayIngredientsId = [];
 
@@ -56,9 +48,9 @@ class SearchController extends Controller
 
             return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
 
-        } elseif (isset($category) && !$ingredients) {
+        } elseif (isset($category) && $ingredients[0] == false) {
 
-            return response()->json(Recipe::getRecipesByCategoryId($category['id']))->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
+            return response()->json(Recipe::getRecipesByCategoryId($category))->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
 
         } else {
 
@@ -68,7 +60,7 @@ class SearchController extends Controller
                 $arrayIngredientsId[] = $ingredientId['id'];
             }
 
-            $idCategory = $category['id'];
+            $idCategory = $category;
 
             $recipesAndIngredients = Ingredient::with(['recipes' => function($query) use($idCategory)
             {
