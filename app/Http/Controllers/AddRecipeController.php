@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
-use App\CategoryIndex;
 use App\Ingredient;
 use App\IngredientIndex;
 use App\Recipe;
@@ -11,51 +9,60 @@ use Illuminate\Http\Request;
 
 class AddRecipeController extends Controller
 {
+    public function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
+
     public function create()
     {
-        $requestFrontend = [
 
-            'category' => [
-                'id' => 4,
-            ],
-
-            'recipe' => [
-                'name' => 'test_new3dd',
-                'description' => 'test4',
-                'image_name' => 'test4',
-            ],
-
-            'ingredient' =>[
-                'test9','огірки','сіль', 'test5', 'молоко коровяче свіже'
-            ]
+        $data = [
+            'name_recipe' => $this->request->input('name_recipe'),
+            'recipe' => $this->request->input('description_recipe'),
+            'image_recipe' => $this->request->file('image'),
         ];
 
-        Recipe::Create([
-            'name_recipe' => $requestFrontend['recipe']['name'],
-            'recipe' => $requestFrontend['recipe']['description'],
-            'image_name' => $requestFrontend['recipe']['image_name'],
-            'category_id' => $requestFrontend['category']['id']
-        ]);
+        $rules = [
+            'name_recipe' => ['required', 'string', 'max:255', 'unique:recipes'],
+            'recipe' => ['required', 'string'],
+            'image_recipe' => 'image|mimes:jpeg,jpg,png,gif|required',
+        ];
 
-        $idRecipe = Recipe::getIdRecipe($requestFrontend['recipe']['name']);
+        $validator = Validator::make($data, $rules);
 
-        foreach ($requestFrontend['ingredient'] as $name) {
+        if ($validator->fails()) {
+            return response()->json('error', 400);
+        } else {
+            $name = $this->request->file('image')->store('uploads', 'public');
 
-            Ingredient::updateOrCreate([
-                'name' => $name,
+            Recipe::Create([
+                'name_recipe' => $this->request->input('name_recipe'),
+                'recipe' => $this->request->input('description_recipe'),
+                'image_name' => $name,
+                'category_id' => $this->request->input('category_id')
             ]);
+
+            $idRecipe = Recipe::getIdRecipe($this->request->input('name_recipe'));
+
+            foreach ($this->request->file('ingredients') as $name) {
+
+                Ingredient::updateOrCreate([
+                    'name' => $name,
+                ]);
+            }
+
+            $idRecipesAndIngredients = [];
+
+            foreach (Ingredient::getIngredientsId($this->request->file('ingredients')) as $ingredientId) {
+
+                $idRecipesAndIngredients[] = [
+                    'ingredient_id' => $ingredientId['id'],
+                    'recipe_id' => $idRecipe[0]['id']
+                ];
+            }
+
+            IngredientIndex::insert($idRecipesAndIngredients);
         }
-
-        $idRecipesAndIngredients = [];
-
-        foreach (Ingredient::getIngredientsId($requestFrontend['ingredient']) as $ingredientId) {
-
-            $idRecipesAndIngredients[] = [
-                'ingredient_id' => $ingredientId['id'],
-                'recipe_id' => $idRecipe[0]['id']
-            ];
-        }
-
-        IngredientIndex::insert($idRecipesAndIngredients);
     }
 }
