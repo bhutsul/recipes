@@ -6,6 +6,7 @@ use App\Ingredient;
 use App\IngredientIndex;
 use App\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class AddRecipeController extends Controller
 {

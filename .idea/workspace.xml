@@ -51,11 +51,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AddRecipeController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="45" column="80" selection-start-line="45" selection-start-column="80" selection-end-line="45" selection-end-column="80" />
-              <folding>
-                <element signature="e#41#60#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="18">
+              <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -360,12 +357,12 @@
       <workItem from="1573296024616" duration="389000" />
       <workItem from="1573321440478" duration="4900000" />
       <workItem from="1573385732398" duration="58846000" />
-      <workItem from="1573928619816" duration="38789000" />
+      <workItem from="1573928619816" duration="39004000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118160000" />
+    <option name="totallyTimeSpent" value="118375000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
@@ -650,11 +647,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/AddRecipeController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="45" column="80" selection-start-line="45" selection-start-column="80" selection-end-line="45" selection-end-column="80" />
-          <folding>
-            <element signature="e#41#60#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="18">
+          <caret line="7" column="28" selection-start-line="7" selection-start-column="28" selection-end-line="7" selection-end-column="28" />
         </state>
       </provider>
     </entry>
