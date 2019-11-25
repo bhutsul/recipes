@@ -45,7 +45,7 @@ class SearchController extends Controller
             }
         } elseif (isset($category) && $ingredients[0] == false) {
             //пошук відносно категорії
-            $data[] = Recipe::getRecipesByCategoryId($category);
+            $data = Recipe::getRecipesByCategoryId($category);
         } else {
             //нетерпляче завантаження з додатковим обмежженням  відносно категорії
             $recipesAndIngredients = Ingredient::with(['recipes' => function($query) use($category)
