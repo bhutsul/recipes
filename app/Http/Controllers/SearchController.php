@@ -34,7 +34,7 @@ class SearchController extends Controller
         $recipesAndIngredients = [];
 
         if (isset($ingredients) && $ingredients[0] != false && $category == false) {
-            //нетерпляче завантаження з додатковим обмежженням
+            //нетерпляче завантаження з додатковим обмеженням
             $recipesAndIngredients = Ingredient::with(['recipes' => function($query)
             {
                 $query->groupBy('recipes.id');
@@ -42,14 +42,14 @@ class SearchController extends Controller
         } elseif (isset($category) && $ingredients[0] == false) {
             $data = Recipe::getRecipesByCategoryId($category);
         } else {
-            //нетерпляче завантаження з додатковим обмежженням  відносно категорії
+            //нетерпляче завантаження з додатковим обмеженням  відносно категорії
             $recipesAndIngredients = Ingredient::with(['recipes' => function($query) use($category)
             {
                 $query->where('category_id', '=', $category)->groupBy('recipes.id');
             }])->whereIn('id', $arrayIngredientsId)->get();
         }
 
-        if($recipesAndIngredients) {
+        if ($recipesAndIngredients) {
             //для повернення тільки інформації про рецепти
             foreach ($recipesAndIngredients as $recipes) {
                 foreach ($recipes['recipes'] as $infoRecipes) {
