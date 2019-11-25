@@ -27,7 +27,7 @@ class AddRecipeController extends Controller
         $rules = [
             'name_recipe' => ['required', 'string', 'max:255', 'unique:recipes'],
             'recipe' => ['required', 'string'],
-            'image_recipe' => 'image|mimes:jpeg,jpg,png,gif|required',
+            'image_recipe' => 'image|mimes:jpeg,jpg,png,gif',
         ];
 
         $validator = Validator::make($data, $rules);
