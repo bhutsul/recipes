@@ -47,7 +47,6 @@ class AddRecipeController extends Controller
             $idRecipe = Recipe::getIdRecipe($this->request->input('name_recipe'));
 
             foreach ($this->request->file('ingredients') as $name) {
-
                 Ingredient::updateOrCreate([
                     'name' => $name,
                 ]);
@@ -56,7 +55,6 @@ class AddRecipeController extends Controller
             $idRecipesAndIngredients = [];
 
             foreach (Ingredient::getIngredientsId($this->request->file('ingredients')) as $ingredientId) {
-
                 $idRecipesAndIngredients[] = [
                     'ingredient_id' => $ingredientId['id'],
                     'recipe_id' => $idRecipe[0]['id']
