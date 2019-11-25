@@ -27,7 +27,7 @@ class AddRecipeController extends Controller
         $rules = [
             'name_recipe' => ['required', 'string', 'max:255', 'unique:recipes'],
             'recipe' => ['required', 'string'],
-            'image_recipe' => 'image|mimes:jpeg,jpg,png,gif|required',
+            'image_recipe' => 'image|mimes:jpeg,jpg,png,gif',
         ];
 
         $validator = Validator::make($data, $rules);
@@ -36,7 +36,7 @@ class AddRecipeController extends Controller
             return response()->json('error', 400);
         } else {
             $name = $this->request->file('image')->store('uploads', 'public');
-
+            //створення рецепту
             Recipe::Create([
                 'name_recipe' => $this->request->input('name_recipe'),
                 'recipe' => $this->request->input('description_recipe'),
@@ -45,18 +45,16 @@ class AddRecipeController extends Controller
             ]);
 
             $idRecipe = Recipe::getIdRecipe($this->request->input('name_recipe'));
-
-            foreach ($this->request->file('ingredients') as $name) {
-
+            //добавлення інгредієнтів яких немає в таблиці
+            foreach ($this->request->input('ingredients') as $name) {
                 Ingredient::updateOrCreate([
                     'name' => $name,
                 ]);
             }
 
             $idRecipesAndIngredients = [];
-
+            //створення масиву id рецептів та інгредієнтів
             foreach (Ingredient::getIngredientsId($this->request->file('ingredients')) as $ingredientId) {
-
                 $idRecipesAndIngredients[] = [
                     'ingredient_id' => $ingredientId['id'],
                     'recipe_id' => $idRecipe[0]['id']
