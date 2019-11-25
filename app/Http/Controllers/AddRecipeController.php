@@ -46,7 +46,7 @@ class AddRecipeController extends Controller
 
             $idRecipe = Recipe::getIdRecipe($this->request->input('name_recipe'));
             //добавлення інгредієнтів яких немає в таблиці
-            foreach ($this->request->file('ingredients') as $name) {
+            foreach ($this->request->input('ingredients') as $name) {
                 Ingredient::updateOrCreate([
                     'name' => $name,
                 ]);
