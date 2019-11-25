@@ -25,11 +25,13 @@ class SearchController extends Controller
 
         $data = [];
 
-        $arrayIngredientsId = [];
         //отримуємо id інгредієнтів
+        $arrayIngredientsId = [];
         foreach (Ingredient::getIngredientsId($ingredients) as $ingredientId) {
             $arrayIngredientsId[] = $ingredientId['id'];
         }
+
+        $recipesAndIngredients = [];
 
         if (isset($ingredients) && $ingredients[0] != false && $category == false) {
             //нетерпляче завантаження з додатковим обмежженням
@@ -37,14 +39,7 @@ class SearchController extends Controller
             {
                 $query->groupBy('recipes.id');
             }])->whereIn('id', $arrayIngredientsId)->get();
-            //для повернення тільки інформації про рецепти
-            foreach ($recipesAndIngredients as $recipes) {
-                foreach ($recipes['recipes'] as $infoRecipes) {
-                    $data[] = $infoRecipes;
-                }
-            }
         } elseif (isset($category) && $ingredients[0] == false) {
-            //пошук відносно категорії
             $data = Recipe::getRecipesByCategoryId($category);
         } else {
             //нетерпляче завантаження з додатковим обмежженням  відносно категорії
@@ -52,7 +47,9 @@ class SearchController extends Controller
             {
                 $query->where('category_id', '=', $category)->groupBy('recipes.id');
             }])->whereIn('id', $arrayIngredientsId)->get();
+        }
 
+        if($recipesAndIngredients) {
             //для повернення тільки інформації про рецепти
             foreach ($recipesAndIngredients as $recipes) {
                 foreach ($recipes['recipes'] as $infoRecipes) {
