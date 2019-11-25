@@ -36,7 +36,7 @@ class AddRecipeController extends Controller
             return response()->json('error', 400);
         } else {
             $name = $this->request->file('image')->store('uploads', 'public');
-
+            //створення рецепту
             Recipe::Create([
                 'name_recipe' => $this->request->input('name_recipe'),
                 'recipe' => $this->request->input('description_recipe'),
@@ -45,7 +45,7 @@ class AddRecipeController extends Controller
             ]);
 
             $idRecipe = Recipe::getIdRecipe($this->request->input('name_recipe'));
-
+            //добавлення інгредієнтів яких немає в таблиці
             foreach ($this->request->file('ingredients') as $name) {
                 Ingredient::updateOrCreate([
                     'name' => $name,
@@ -53,7 +53,7 @@ class AddRecipeController extends Controller
             }
 
             $idRecipesAndIngredients = [];
-
+            //створення масиву id рецепта та інгредіента
             foreach (Ingredient::getIngredientsId($this->request->file('ingredients')) as $ingredientId) {
                 $idRecipesAndIngredients[] = [
                     'ingredient_id' => $ingredientId['id'],

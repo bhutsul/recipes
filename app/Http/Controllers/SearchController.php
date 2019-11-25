@@ -25,47 +25,42 @@ class SearchController extends Controller
 
         $data = [];
 
+        $arrayIngredientsId = [];
+        //отримуємо id інгредієнтів
+        foreach (Ingredient::getIngredientsId($ingredients) as $ingredientId) {
+            $arrayIngredientsId[] = $ingredientId['id'];
+        }
+
         if (isset($ingredients) && $ingredients[0] != false && $category == false) {
-            $arrayIngredientsId = [];
-
-            foreach (Ingredient::getIngredientsId($ingredients) as $ingredientId) {
-                $arrayIngredientsId[] = $ingredientId['id'];
-            }
-
+            //нетерпляче завантаження з додатковим обмежженням
             $recipesAndIngredients = Ingredient::with(['recipes' => function($query)
             {
                 $query->groupBy('recipes.id');
             }])->whereIn('id', $arrayIngredientsId)->get();
-
+            //для повернення тільки інформації про рецепти
             foreach ($recipesAndIngredients as $recipes) {
                 foreach ($recipes['recipes'] as $infoRecipes) {
                     $data[] = $infoRecipes;
                 }
             }
-            return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
         } elseif (isset($category) && $ingredients[0] == false) {
-            return response()->json(Recipe::getRecipesByCategoryId($category))->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
+            //пошук відносно категорії
+            $data[] = Recipe::getRecipesByCategoryId($category);
         } else {
-            $arrayIngredientsId = [];
-
-            foreach (Ingredient::getIngredientsId($ingredients) as $ingredientId) {
-                $arrayIngredientsId[] = $ingredientId['id'];
-            }
-
-            $idCategory = $category;
-
-            $recipesAndIngredients = Ingredient::with(['recipes' => function($query) use($idCategory)
+            //нетерпляче завантаження з додатковим обмежженням  відносно категорії
+            $recipesAndIngredients = Ingredient::with(['recipes' => function($query) use($category)
             {
-                $query->where('category_id', '=', $idCategory)->groupBy('recipes.id');
+                $query->where('category_id', '=', $category)->groupBy('recipes.id');
             }])->whereIn('id', $arrayIngredientsId)->get();
 
+            //для повернення тільки інформації про рецепти
             foreach ($recipesAndIngredients as $recipes) {
                 foreach ($recipes['recipes'] as $infoRecipes) {
                     unset($infoRecipes['pivot']);
                     $data[] = $infoRecipes;
                 }
             }
-            return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
         }
+        return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
     }
 }
