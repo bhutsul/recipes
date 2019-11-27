@@ -18,3 +18,12 @@ Route::get('categories','CategoryController@show');
 
 Route::get('search','SearchController@index');
 Route::post('add','AddRecipeController@create');
+
+Route::post('registration','Auth\RegisterController@registration');
+Route::post('login','Auth\LoginController@login');
+Route::post('logout', 'Auth\LogoutController')->middleware('auth:api');
+
+Route::group(['middleware' => ['web']], function () {
+    Route::get('social-auth/{provider}', 'Auth\LoginController@redirectToProviderLogin');
+    Route::get('social-auth/{provider}/callback', 'Auth\LoginController@authenticateSocial');
+});

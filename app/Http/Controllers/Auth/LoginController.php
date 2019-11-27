@@ -2,38 +2,63 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+use App\User;
+use Socialite;
+use Session;
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function redirectToProviderLogin($provider)
     {
-        $this->middleware('guest')->except('logout');
+        return Socialite::driver($provider)->redirect();
+    }
+    public function authenticateSocial($provider)
+    {
+        $user = Socialite::driver($provider)->stateless()->user();
+        $findUser = User::where('email', $user->getEmail())->first();
+
+        if (!$findUser)
+        {
+            User::create([
+                'email' => $user->getEmail(),
+            ]);
+        }
+
+        $token = $user->token;
+        $expiresIn = $user->expiresIn;
+
+        return response()->json([
+            'token' => $token,
+            'expires_at' => $expiresIn,
+        ], 200);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'message' => 'You cannot sign with those credentials',
+                'errors' => 'Unauthorised'
+            ], 401);
+        }
+
+        $token = Auth::user()->createToken(config('app.name'));
+        $token->token->expires_at = $request->remember_me ?
+            Carbon::now()->addMonth() :
+            Carbon::now()->addDay();
+
+        $token->token->save();
+
+        return response()->json([
+            'token_type' => 'Bearer',
+            'token' => $token->accessToken,
+            'expires_at' => Carbon::parse($token->token->expires_at)->toDateTimeString()
+        ], 200);
     }
 }
