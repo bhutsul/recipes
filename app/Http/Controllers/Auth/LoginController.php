@@ -12,13 +12,13 @@ use Session;
 
 class LoginController extends Controller
 {
-    public function redirectToProviderLogin($provider)
+    public function redirectToProviderLogin()
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver('google')->redirect();
     }
-    public function authenticateSocial($provider)
+    public function authenticateSocial()
     {
-        $user = Socialite::driver($provider)->stateless()->user();
+        $user = Socialite::driver('google')->stateless()->user();
         $findUser = User::where('email', $user->getEmail())->first();
 
         if (!$findUser)

@@ -24,6 +24,6 @@ Route::post('login','Auth\LoginController@login');
 Route::post('logout', 'Auth\LogoutController')->middleware('auth:api');
 
 Route::group(['middleware' => ['web']], function () {
-    Route::get('social-auth/{provider}', 'Auth\LoginController@redirectToProviderLogin');
-    Route::get('social-auth/{provider}/callback', 'Auth\LoginController@authenticateSocial');
+    Route::get('social-auth/google', 'Auth\LoginController@redirectToProviderLogin');
+    Route::get('social-auth/google/callback', 'Auth\LoginController@authenticateSocial');
 });
