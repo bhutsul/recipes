@@ -7,10 +7,17 @@ use Illuminate\Http\Request;
 
 class RecipeController extends Controller
 {
-    public function show(Recipe $recipe)
+    public function showAll(Recipe $recipe)
     {
         $recipes = Recipe::getRecipe();
 
         return response()->json($recipes)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
+    }
+
+    public function showRecipe($id)
+    {
+        $recipe = Recipe::recipeById($id);
+
+        return response()->json($recipe)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
     }
 }

@@ -13,11 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 Route::group(['middleware' => 'cors'], function () {
-    Route::get('recipes','RecipeController@show');
+    Route::get('recipes','RecipeController@showAll');
     Route::get('categories','CategoryController@show');
     Route::get('ingredients','IngredientController@show');
 
     Route::get('search','SearchController@index');
+    Route::get('recipe/{id}','RecipeController@showRecipe');
     Route::post('add','AddRecipeController@create');
 
     Route::post('registration','Auth\RegisterController@registration');

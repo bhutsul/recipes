@@ -22,6 +22,12 @@ class Recipe extends Model
         return $recipes = Recipe::all();
     }
 
+    public static function recipeById($id)
+    {
+        return $recipe = Recipe::where('id', $id)->get();
+    }
+
+
     public function ingredients()
     {
         return $this->belongsToMany('App\Recipe');
