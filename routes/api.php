@@ -14,7 +14,8 @@ use Illuminate\Http\Request;
 */
 Route::group(['middleware' => 'cors'], function () {
     Route::get('recipes','RecipeController@show');
-    Route::get('categories','CategoryController@show')->middleware('cors');
+    Route::get('categories','CategoryController@show');
+    Route::get('ingredients','IngredientController@show');
 
     Route::get('search','SearchController@index');
     Route::post('add','AddRecipeController@create');

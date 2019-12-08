@@ -12,6 +12,10 @@ class Ingredient extends Model
         'name',
     ];
 
+    public static function getIngredients()
+    {
+        return $ingredients = Ingredient::all();
+    }
 
     public static function getIngredientsId($ingredient = []) {
         return Ingredient::whereIn('name', $ingredient)->get('id');
