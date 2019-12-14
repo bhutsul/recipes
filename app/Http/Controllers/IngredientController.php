@@ -13,9 +13,4 @@ class IngredientController extends Controller
 
         return response()->json($ingredients)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
     }
-
-    public function recipeById($id)
-    {
-
-    }
 }

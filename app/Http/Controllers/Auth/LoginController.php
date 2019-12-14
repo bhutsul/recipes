@@ -19,12 +19,12 @@ class LoginController extends Controller
     public function authenticateSocial()
     {
         $user = Socialite::driver('google')->stateless()->user();
-        $findUser = User::where('email', $user->getEmail())->first();
+        $findUser = User::where('google_email', $user->getEmail())->first();
 
         if (!$findUser)
         {
             User::create([
-                'email' => $user->getEmail(),
+                'google_email' => $user->getEmail(),
             ]);
         }
 
