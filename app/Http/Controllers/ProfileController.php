@@ -13,7 +13,11 @@ class ProfileController extends Controller
 
     public function __construct()
     {
-        $this->user = JWTAuth::parseToken()->authenticate();
+//        $this->user = JWTAuth::parseToken()->authenticate();
+    }
+
+    public function userInfo(){
+        return response()->json(JWTAuth::user()->email);
     }
 
     public function savedRecipes(){

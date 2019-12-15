@@ -27,5 +27,6 @@ Route::group(['middleware' => 'cors'], function () {
         Route::post('add','AddRecipeController@create');
         Route::get('customRecipes', 'ProfileController@customRecipes');
         Route::get('savedRecipes', 'ProfileController@savedRecipes');
+        Route::get('userInfo','ProfileController@userInfo');
     });
 });
