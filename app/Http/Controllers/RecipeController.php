@@ -18,6 +18,9 @@ class RecipeController extends Controller
     {
         $recipe = Recipe::recipeById($id);
 
+//        foreach (Recipe::find($id)->ingredients as $ingredient) {
+//            echo $ingredient;
+//        }
         return response()->json($recipe)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
     }
 }

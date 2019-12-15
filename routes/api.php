@@ -19,13 +19,13 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::get('search','SearchController@index');
     Route::get('recipe/{id}','RecipeController@showRecipe');
-    Route::post('add','AddRecipeController@create');
 
     Route::post('registration','Auth\RegisterController@registration');
     Route::post('login','Auth\LoginController@login');
 
-    Route::group(['middleware' => ['web']], function () {
-        Route::get('social-auth/google', 'Auth\LoginController@redirectToProviderLogin');
-        Route::get('social-auth/google/callback', 'Auth\LoginController@authenticateSocial');
+    Route::group(['middleware' => 'auth.jwt'], function () {
+        Route::post('add','AddRecipeController@create');
+        Route::get('customRecipes', 'ProfileController@customRecipes');
+        Route::get('savedRecipes', 'ProfileController@savedRecipes');
     });
 });

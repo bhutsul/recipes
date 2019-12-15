@@ -13,6 +13,7 @@ class AddRecipeController extends Controller
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->user = JWTAuth::parseToken()->authenticate();
     }
 
     public function create()
@@ -41,7 +42,8 @@ class AddRecipeController extends Controller
                 'name_recipe' => $this->request->input('name_recipe'),
                 'recipe' => $this->request->input('description_recipe'),
                 'image_name' => $name,
-                'category_id' => $this->request->input('category_id')
+                'category_id' => $this->request->input('category_id'),
+                'user_id' => JWTAuth::user()->id,
             ]);
 
             $idRecipe = Recipe::getIdRecipe($this->request->input('name_recipe'));

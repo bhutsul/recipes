@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
@@ -17,7 +18,6 @@ class RegisterController extends Controller
      */
     public function registration(Request $request)
     {
-
         $data = [
             'email' => $request->input('email'),
             'password' => $request->input('password')
@@ -30,7 +30,6 @@ class RegisterController extends Controller
 
         $validator = Validator::make($data, $rules);
 
-
         if ($validator->fails())
         {
             return response()->json($validator->errors(), 400);
@@ -39,6 +38,7 @@ class RegisterController extends Controller
             User::Create([
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
+                'api_token' => Str::random(60),
             ]);
 
             return response()->json([
