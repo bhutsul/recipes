@@ -23,13 +23,13 @@ class AddRecipeController extends Controller
 
         $data = [
             'name_recipe' => $this->request->input('name_recipe'),
-            'recipe' => $this->request->input('description_recipe'),
+            'description' => $this->request->input('description_recipe'),
             'image_recipe' => $this->request->file('image'),
         ];
 
         $rules = [
             'name_recipe' => ['required', 'string', 'max:255', 'unique:recipes'],
-            'recipe' => ['required', 'string'],
+            'description' => ['required', 'string'],
             'image_recipe' => 'image|mimes:jpeg,jpg,png,gif',
         ];
 
