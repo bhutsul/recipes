@@ -9,7 +9,7 @@ class Recipe extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name_recipe', 'recipe', 'image_name', 'category_id', 'description'
+        'name_recipe', 'recipe', 'image_name', 'category_id', 'description', 'user_id'
     ];
 
     public static function getIdRecipe($description = '')
@@ -31,6 +31,11 @@ class Recipe extends Model
     public function ingredients()
     {
         return $this->belongsToMany('App\Ingredient', 'ingredient_index', 'recipe_id', 'ingredient_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsToMany('App\User');
     }
 
     public static function getRecipesByCategoryId($categoryId)

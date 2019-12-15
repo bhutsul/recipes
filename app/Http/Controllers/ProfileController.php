@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use JWTAuth;
-use App\User;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -20,11 +19,15 @@ class ProfileController extends Controller
         return response()->json(['email' => JWTAuth::user()->email]);
     }
 
-    public function saveRecipe(Request $request){
+    public function savedRecipes() {
+        $recipes = $this->user->savedRecipes()->get();
+        if ($recipes) {
+            return response()->json($recipes);
+        }
     }
 
     public function customRecipes(Request $request){
-        $recipes = $this->user->recipes()->get();
+        $recipes = $this->user->customRecipes()->get();
         if ($recipes) {
             return response()->json($recipes);
         }
