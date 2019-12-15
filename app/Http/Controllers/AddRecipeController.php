@@ -7,13 +7,14 @@ use App\IngredientIndex;
 use App\Recipe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use JWTAuth;
 
 class AddRecipeController extends Controller
 {
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->user = JWTAuth::parseToken()->authenticate();
+        //$this->user = JWTAuth::parseToken()->authenticate();
     }
 
     public function create()
