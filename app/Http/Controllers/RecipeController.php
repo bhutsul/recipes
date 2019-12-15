@@ -16,11 +16,11 @@ class RecipeController extends Controller
 
     public function showRecipe($id)
     {
-        $recipe = Recipe::recipeById($id);
+        $data['recipe'] = Recipe::recipeById($id);
 
-//        foreach (Recipe::find($id)->ingredients as $ingredient) {
-//            echo $ingredient;
-//        }
-        return response()->json($recipe)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
+        foreach (Recipe::find($id)->ingredients as $ingredient) {
+            $data['ingredients'] = $ingredient;
+        }
+        return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
     }
 }

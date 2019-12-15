@@ -30,7 +30,7 @@ class Recipe extends Model
 
     public function ingredients()
     {
-        return $this->belongsToMany('App\Recipe');
+        return $this->belongsToMany('App\Ingredient', 'ingredient_index', 'recipe_id', 'ingredient_id');
     }
 
     public static function getRecipesByCategoryId($categoryId)
