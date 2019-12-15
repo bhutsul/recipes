@@ -41,10 +41,9 @@ class AddRecipeController extends Controller
             //створення рецепту
             Recipe::Create([
                 'name_recipe' => $this->request->input('name_recipe'),
-                'recipe' => $this->request->input('description_recipe'),
+                'description' => $this->request->input('description_recipe'),
                 'image_name' => $name,
                 'category_id' => $this->request->input('category_id'),
-                'user_id' => JWTAuth::user()->id,
             ]);
 
             $idRecipe = Recipe::getIdRecipe($this->request->input('name_recipe'));

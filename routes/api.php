@@ -26,7 +26,7 @@ Route::group(['middleware' => 'cors'], function () {
     Route::group(['middleware' => 'auth.jwt'], function () {
         Route::post('add','AddRecipeController@create');
         Route::get('customRecipes', 'ProfileController@customRecipes');
-        Route::get('savedRecipes', 'ProfileController@savedRecipes');
+        Route::get('saveRecipe', 'ProfileController@saveRecipe');
         Route::get('userInfo','ProfileController@userInfo');
     });
 });
