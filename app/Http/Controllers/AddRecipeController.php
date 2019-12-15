@@ -23,14 +23,14 @@ class AddRecipeController extends Controller
 
         $data = [
             'name_recipe' => $this->request->input('name_recipe'),
-            'description' => $this->request->input('description_recipe'),
+            'description' => $this->request->description_recipe,
             'image_recipe' => $this->request->file('image'),
         ];
 
         $rules = [
             'name_recipe' => ['required', 'string', 'max:255', 'unique:recipes'],
             'description' => ['required', 'string'],
-            'image_recipe' => $this->request->file('image') ? 'image|mimes:jpeg,jpg,png,gif' : '',
+            'image_recipe' => $this->request->file('image') !== 'undefined'  ? 'image|mimes:jpeg,jpg,png,gif' : '',
         ];
 
         $validator = Validator::make($data, $rules);

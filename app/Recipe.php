@@ -9,7 +9,7 @@ class Recipe extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name_recipe', 'recipe', 'image_name', 'category_id'
+        'name_recipe', 'recipe', 'image_name', 'category_id', 'description'
     ];
 
     public static function getIdRecipe($description = '')
