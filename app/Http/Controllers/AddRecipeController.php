@@ -19,6 +19,7 @@ class AddRecipeController extends Controller
 
     public function create()
     {
+        $ingredients = explode(',',$this->request->post('ingredients'));
 
         $data = [
             'name_recipe' => $this->request->input('name_recipe'),
@@ -48,7 +49,7 @@ class AddRecipeController extends Controller
 
             $idRecipe = Recipe::getIdRecipe($this->request->input('name_recipe'));
             //добавлення інгредієнтів яких немає в таблиці
-            foreach ($this->request->input('ingredients') as $name) {
+            foreach ($ingredients as $name) {
                 Ingredient::updateOrCreate([
                     'name' => $name,
                 ]);
@@ -56,7 +57,7 @@ class AddRecipeController extends Controller
 
             $idRecipesAndIngredients = [];
             //створення масиву id рецептів та інгредієнтів
-            foreach (Ingredient::getIngredientsId($this->request->input('ingredients')) as $ingredientId) {
+            foreach (Ingredient::getIngredientsId($ingredients) as $ingredientId) {
                 $idRecipesAndIngredients[] = [
                     'ingredient_id' => $ingredientId['id'],
                     'recipe_id' => $idRecipe[0]['id']
