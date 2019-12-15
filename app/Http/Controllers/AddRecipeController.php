@@ -34,7 +34,7 @@ class AddRecipeController extends Controller
         $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
-            return response()->json('error', 400);
+            return response()->json($validator->errors(), 400);
         } else {
             $name = $this->request->file('image')->store('uploads', 'public');
             //створення рецепту
