@@ -28,7 +28,7 @@ Route::group(['middleware' => 'cors'], function () {
         Route::get('customRecipes', 'ProfileController@customRecipes');
         Route::get('savedRecipes', 'ProfileController@savedRecipes');
         Route::post('saveRecipe', 'SavedRecipeController@create');
-        Route::post('deleteSaveRecipe', 'SavedRecipeController@delete');
+        Route::post('deleteSavedRecipe', 'SavedRecipeController@delete');
         Route::get('userInfo','ProfileController@userInfo');
     });
 });
