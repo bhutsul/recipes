@@ -16,10 +16,15 @@ class RecipeController extends Controller
 
     public function showRecipe($id)
     {
-        $data['recipe'] = Recipe::recipeById($id);
+        foreach (Recipe::recipeById($id) as $recipe){
+            $data['recipe'] = $recipe;
+        }
 
         foreach (Recipe::find($id)->ingredients as $ingredient) {
-            $data['ingredients'] = $ingredient;
+            $data['ingredients'][] = [
+                'id' => $ingredient['id'],
+                'name' => $ingredient['name'],
+            ];
         }
         return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
     }
