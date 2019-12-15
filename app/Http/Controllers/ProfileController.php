@@ -17,7 +17,7 @@ class ProfileController extends Controller
     }
 
     public function userInfo(){
-        return response()->json(JWTAuth::user()->email);
+        return response()->json(['email' => JWTAuth::user()->email]);
     }
 
     public function savedRecipes(){
