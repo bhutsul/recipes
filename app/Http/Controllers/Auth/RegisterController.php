@@ -38,7 +38,6 @@ class RegisterController extends Controller
             User::Create([
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password')),
-                'api_token' => Str::random(60),
             ]);
 
             return response()->json([
