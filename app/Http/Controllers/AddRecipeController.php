@@ -38,11 +38,10 @@ class AddRecipeController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         } else {
-
-            if ($this->request->file('image') !== 'undefined') {
-                $name = $this->request->file('image')->store('uploads', 'public');
+            if ($this->request->file('image') == NULL) {
+                $name = 0;
             } else {
-                $name = NULL;
+                $name = $this->request->file('image')->store('uploads', 'public');
             }
             //створення рецепту
             Recipe::Create([
