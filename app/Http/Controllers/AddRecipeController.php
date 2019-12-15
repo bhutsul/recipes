@@ -56,7 +56,7 @@ class AddRecipeController extends Controller
 
             $idRecipesAndIngredients = [];
             //створення масиву id рецептів та інгредієнтів
-            foreach (Ingredient::getIngredientsId($this->request->file('ingredients')) as $ingredientId) {
+            foreach (Ingredient::getIngredientsId($this->request->input('ingredients')) as $ingredientId) {
                 $idRecipesAndIngredients[] = [
                     'ingredient_id' => $ingredientId['id'],
                     'recipe_id' => $idRecipe[0]['id']
