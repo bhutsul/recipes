@@ -22,6 +22,6 @@ class SavedRecipeController extends Controller
         $recipeId = $request->post('recipe_id');
         $userId = JWTAuth::user()->id;
 
-        SavedRecipe::where('user_id', $userId)->where('recipe_id', $recipeId)->first()->delete();
+        SavedRecipe::where('user_id', $userId)->where('recipe_id', $recipeId)->delete();
     }
 }
