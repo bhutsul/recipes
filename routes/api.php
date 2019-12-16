@@ -24,11 +24,13 @@ Route::group(['middleware' => 'cors'], function () {
     Route::post('login','Auth\LoginController@login');
 
     Route::group(['middleware' => 'auth.jwt'], function () {
-        Route::post('add','AddRecipeController@create');
+        Route::post('add','RecipeController@create');
+        Route::put('update','RecipeController@update');
         Route::get('customRecipes', 'ProfileController@customRecipes');
         Route::get('savedRecipes', 'ProfileController@savedRecipes');
         Route::post('saveRecipe', 'SavedRecipeController@create');
         Route::post('deleteSavedRecipe', 'SavedRecipeController@delete');
+        Route::post('deleteCustomRecipe', 'RecipeController@delete');
         Route::get('recipeAuth/{id}','RecipeController@showRecipeAuth');
         Route::get('userInfo','ProfileController@userInfo');
     });
