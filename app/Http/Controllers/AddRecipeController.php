@@ -40,7 +40,7 @@ class AddRecipeController extends Controller
         } else {
             $name = NULL;
             if ($this->request->file('image') !== NULL) {
-                $name = $this->request->file('image')->store('storage/uploads', 'public');
+                $name = $this->request->file('image')->store('uploads', 'public');
             }
             //створення рецепту
             Recipe::Create([
