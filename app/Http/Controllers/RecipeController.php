@@ -51,4 +51,12 @@ class RecipeController extends Controller
         }
         return response()->json($data)->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_HEX_AMP);
     }
+
+    public function delete(Request $request)
+    {
+        $recipeId = $request->post('recipe_id');
+        $userId = JWTAuth::user()->id;
+
+        Recipe::where('user_id', $userId)->where('id', $recipeId)->delete();
+    }
 }
