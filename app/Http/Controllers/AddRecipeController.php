@@ -38,6 +38,7 @@ class AddRecipeController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         } else {
+            $name = NULL;
             if ($this->request->file('image') !== NULL) {
                 $name = $this->request->file('image')->store('uploads', 'public');
             }
