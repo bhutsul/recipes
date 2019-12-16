@@ -124,7 +124,7 @@ class RecipeController extends Controller
         $ingredients = explode(',',$request->input('ingredients'));
 
         $data = [
-            'name_recipe' => $request->input('name_recipe'),
+            'name_recipe' => $request->name_recipe,
             'description' => $request->input('description_recipe'),
             'image_recipe' => $request->file('image'),
         ];
