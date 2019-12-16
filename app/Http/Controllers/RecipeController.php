@@ -176,7 +176,9 @@ class RecipeController extends Controller
             IngredientIndex::where('recipe_id', $request->input('recipe_id'))
                         ->whereNotIn('ingredient_id',$idIngredients)
                         ->delete();
-            unlink(storage_path('app/public/'.$request->old_image_name));
+            if ($request->old_image_name !== 'undefined') {
+                unlink(storage_path('app/public/' . $request->old_image_name));
+            }
         }
     }
 }
